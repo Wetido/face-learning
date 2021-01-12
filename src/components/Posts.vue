@@ -2,7 +2,7 @@
   <div class="main-container">
       <div>
         <div v-if="this.items === null">Ladowanie</div>
-        <div v-else="" v-for="item in items" v-bind:key="item.id">{{item.content}}</div>
+        <div v-else v-for="item in items" v-bind:key="item.id">{{item.content}}</div>
       </div>
   </div>
 </template>
