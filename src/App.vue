@@ -7,14 +7,13 @@
 
 <script>
 import Posts from './components/Posts.vue'
-import AddPostModal from "./components/AddPostModal"
+
 
 export default {
 
   name: 'App',
   components: {
-    Posts,
-    AddPostModal
+    Posts
   }
 }
 </script>
