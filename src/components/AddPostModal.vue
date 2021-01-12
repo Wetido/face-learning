@@ -2,9 +2,11 @@
     <div>
         <div class="plus" @click="modalShow = !modalShow"></div>
 
-        <b-modal v-model="modalShow" @ok="handleOk">
-            <label>Tytuł</label><input type="text" v-model="header" placeholder="Tytuł">
-            <label>Treść</label><textarea type="text" v-model="content" placeholder="Treść"></textarea>
+        <b-modal title="Dodawanie nowego postu" v-model="modalShow" @ok="handleOk">
+            <div class="add-post-modal-wrapper">
+                <label class="add-post-modal-label">Tytuł</label><input class="add-post-modal-input" type="text" v-model="header" placeholder="Tytuł"><br>
+                <label class="add-post-modal-label">Treść</label><textarea class="add-post-modal-textarea" type="text" v-model="content" placeholder="Treść"></textarea>
+            </div>
         </b-modal>
     </div>
 </template>
@@ -115,6 +117,24 @@
     transform: rotate(360deg); 
 }
 
+.add-post-modal-label{
+    padding: 5px;
+    vertical-align: top;
+    margin-right: 20px;
+}
 
+.add-post-modal-wrapper{
+    margin: 30px;
+}
+
+.add-post-modal-input{
+    padding: 5px;
+    width: 80%;
+}
+
+.add-post-modal-textarea{
+    padding: 5px;
+    width: 80%;
+}
 
 </style>
