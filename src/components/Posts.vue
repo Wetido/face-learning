@@ -1,12 +1,16 @@
 <template>
   <div class="main-container">
-      
+    <div class="navbar">
+      <img class="navbar_logo" src="../assets/logo_on_start.png">
+
+    </div>
+      <div class="wall">
         <div v-if="this.items === null">Ladowanie</div>
-        <div v-else v-for="item in items" v-bind:key="item.id">
-          <div>{{item.header}}</div>
-          <div>{{item.content}}</div>
+        <div class="one_post" v-else v-for="item in items" v-bind:key="item.id">
+          <div class="post_header">{{item.header}}</div>
+          <div class="post_content">{{item.content}}</div>
         </div>
-      
+      </div>
   </div>
 </template>
 
@@ -46,6 +50,40 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .main-container{
-    padding: 30px;
+    
+    background-color: #c9ccd1;
+  }
+  .wall{
+    padding: 20px;
+  }
+  .post_header{
+    font-size: 1.5em;
+    color:black;
+    font-weight: bold;
+    padding: 1%;
+  }
+  .post_content{
+    font-size: 1.2em;
+    color: black;
+    padding-bottom: 2%;
+
+  }
+  .navbar_logo{
+    max-height: 8em;
+  }
+
+  .one_post{
+    width: 100%;
+    float:inline-start;
+    margin: auto;
+    border: 1px solid #ff6acd ;
+    border-radius: 5px 5px;
+    background-color: white;
+    margin-top: 1%;
+    margin-bottom: 1%;
+  }
+
+  .navbar{
+    background-color: #383f4b;
   }
 </style>
