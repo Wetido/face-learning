@@ -7,8 +7,8 @@
       <div class="wall">
         <div v-if="this.items === null">Ladowanie</div>
         <div class="one_post" v-else v-for="item in items" v-bind:key="item.id">
-          <div class="post_header">{{item.header}}</div>
-          <div class="post_content">{{item.content}}</div>
+          <b-card class="post_header">{{item.header}}</b-card>
+          <b-card class="post_content">{{item.content}}</b-card>
         </div>
       </div>
   </div>
@@ -16,6 +16,10 @@
 
 <script>
 import firebase from "../database/firebase.js";
+import { BootstrapVue } from 'bootstrap-vue'
+    import Vue from 'vue'
+
+    Vue.use(BootstrapVue)
 
 export default {
   data () {
