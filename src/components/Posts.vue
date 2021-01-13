@@ -1,6 +1,7 @@
 <template>
   <div class="main-container">
       <Navbar></Navbar>
+      <Chat></Chat>
       <div class="wall">
         <div v-if="this.items === null">Ladowanie</div>
         <div class="one_post" v-else v-for="item in items" v-bind:key="item.id">
@@ -8,6 +9,7 @@
           <b-card class="post_content">{{item.content}}</b-card>
         </div>
       </div>
+
   </div>
 </template>
 
@@ -15,6 +17,7 @@
   import firebase from "../database/firebase.js";
   import { BootstrapVue } from 'bootstrap-vue'
   import Navbar from './Navbar'
+  import Chat from '../components/Chat'
   import Vue from 'vue'
 
   Vue.use(BootstrapVue)
@@ -43,11 +46,12 @@
       }
     },
     components: {
-      Navbar
+      Navbar,
+      Chat
     },
     name: 'Posts',
     props: {
-      msg: String
+      email: String
     }
   }
 </script>
