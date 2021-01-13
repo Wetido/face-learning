@@ -2,10 +2,11 @@
     <div class="chat-wrapper">
         <div class="chat-header">Witamy na czacie internetowym</div>
 
-        <div class="one_post" v-for="item in messages" v-bind:key="item.id">
-            <div class="post_header">{{item.message}}</div>
+        <div class="messages-wrapper">
+            <div class="chat-list" v-for="item in messages" v-bind:key="item.id">
+                <div class="post_header">{{item.message}}</div>
+            </div>
         </div>
-
         <div class="send-form">
             <b-input class="send-input" v-model="message"></b-input>
             <b-button @click="putData" class="send-button">Wyslij</b-button>
@@ -22,15 +23,26 @@ export default {
         data() {
                 return {
                     message: "",
-                    messages: []
+                    messages: [],
+                    connection: null,
                 }
             },
 
         created(){
             this.getAllMessages()
+            this.webSocket()
         },
 
         methods: {
+
+            async webSocket(){
+                
+                this.connection = new WebSocket("wss://echo.websocket.org")
+
+                this.connection.onmessage = () => {
+                    this.getAllMessages()
+                }
+            },
 
             async putData() {
                 const db = firebase.firestore();
@@ -40,6 +52,7 @@ export default {
                     user: firebase.auth().currentUser.email,
                     date: new Date()
                 }
+                await this.connection.send(this.message);
                 await date.add(body)
                 this.message = ""
             },
@@ -93,5 +106,10 @@ export default {
     bottom: 2px;
     right: 2px;
     width: 34%;
+}
+
+.messages-wrapper{
+    height: 70%;
+    overflow: scroll;
 }
 </style>
