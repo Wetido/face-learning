@@ -1,20 +1,12 @@
 <template>
   <div>
-    <Posts msg="Welcome to Your Vue.js App"/>
-    <AddPostModal></AddPostModal>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import Posts from './components/Posts.vue'
-
-
 export default {
-
-  name: 'App',
-  components: {
-    Posts
-  }
+    name: 'app'   
 }
 </script>
 
