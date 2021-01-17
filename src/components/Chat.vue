@@ -7,15 +7,35 @@
             </div>
 
             <div class="messages-wrapper">
-                <div class="chat-list" v-for="item in messages" v-bind:key="item.id">
-                    <div v-if="item.user === 'you'" class="post-header-you">
-                        <div class="spacing"></div>
-                        <div class="content">{{item.message}}</div>
-                    </div>
-                    <div v-else class="post-header-other">
-                        
-                        <div class="content">{{item.message}}</div>
-                        <div class="spacing"></div>
+                <div class="chat-list" v-for="(item, index) in messages" v-bind:key="index">
+                    <div v-if="messages[index+1] && messages[index-1]">
+                    
+                        <div v-if="item.user !== messages[index-1].user">
+                            <div class="spacing"></div>
+                        </div>
+
+                        <div v-if="item.user === user" class="post-header-you">
+                            <div class="spacing"></div>
+                            <div class="content">{{item.message}}</div>
+                        </div>
+
+                        <div v-else class="post-header-other">
+                            <div v-if="index === 1" class="first-message">
+                                
+                                <div class="user">{{item.user.split("@")[0]}}</div>
+                                <div class="content">{{item.message}}</div>
+                            </div>
+
+                            <div v-else-if="item.user !== messages[index-1].user" class="first-message">
+        
+                                <div class="user">{{item.user.split("@")[0]}}</div>
+                                <div class="content">{{item.message}}</div>
+                            </div>
+
+                            <div v-else>
+                                <div class="content">{{item.message}}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -25,6 +45,8 @@
             </div>
 
     </div>
+
+    <!-- <div v-else-if="item.user !== messages[index+1].user" class="user">{{item.user.split("@")[0]}}</div> -->
 
     <div class="chat-wrapper-hidden" id="wrapper-hidden">
         <div class="chat-header-wrapper">
@@ -85,7 +107,7 @@ export default {
                 const dat = await db.collection("messages").orderBy("date", "asc")
                 
                 dat.onSnapshot((data) => {
-                    this.messages = (data.docs.map(doc => ({ ...doc.data(), id: doc.id, user: doc.data().user === this.user ? "you" : "other"})));
+                    this.messages = (data.docs.map(doc => ({ ...doc.data(), id: doc.id})));
                 })
 
                 
@@ -131,14 +153,14 @@ export default {
     display: flex;
     flex-wrap: wrap;
     padding: 5px;
-    background-color: rgba(218, 105, 105, 0.603);
+    background-color: #f365dbc5;
     border-radius: 5px;
 }
 
 .chat-wrapper-hidden{
 
     width: 400px;
-    background-color: rgb(235, 230, 230);
+    background-color: rgb(241, 204, 230);
     border: 1px rounded black;
     border-radius: 5px;
     position: fixed;
@@ -157,9 +179,6 @@ export default {
     margin-right: 5px;
 }
 
-.chat-list{
-    margin: 15px 15px 15px 0px;
-}
 
 .chat-wrapper{
     width: 400px;
@@ -212,48 +231,57 @@ export default {
 
 .post-header-you{
 
-    margin: 2px 5px 2px 5px;
-    padding: 2px 5px 2px 5px;
+
     display: flex;
     flex-flow: row wrap;
     align-items: flex-start;
 
 }
 
-.post-header-other{
 
+
+.post-header-you > div{
+
+    background-color: rgba(50, 201, 50, 0.637);
+    border-radius: 10px;
+    text-align: right;
+    padding: 6px;
+
+    margin: 2px 0px 0px 0px;
+}
+
+.post-header-other > div > div{
+
+    background-color: rgba(136, 136, 231, 0.596);
+    padding: 5px;
+    border-radius: 10px;
     order: -1;
     display: flex;
     flex-flow: row wrap;
     align-items: flex-start;
-    margin: 2px 5px 2px 5px;
-    padding: 2px 5px 2px 5px;
+    padding: 6px;
+    margin: 2px 0px 0px 0px;
 }
 
-.post-header-you > div {
-
-    background-color: rgba(50, 201, 50, 0.637);
-    padding: 7px;
-    border-radius: 10px;
-    text-align: right;
-}
-
-.post-header-other > div {
-
-    background-color: rgba(136, 136, 231, 0.596);
-    padding: 7px;
-    border-radius: 10px;
-}
 
 
 .spacing{
     width: 20%;
-    margin: 5px;
+    margin: 10px;
     visibility: hidden;
 }
 
 .content{
-    width: 77%;
+    width: 74% !important;
+}
+
+.user{
+
+    font-size: 0.6rem;
+    background-color: rgb(248, 248, 248) !important;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
 }
 
 
