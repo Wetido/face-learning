@@ -4,7 +4,8 @@
 
         <div class="messages-wrapper">
             <div class="chat-list" v-for="item in messages" v-bind:key="item.id">
-                <div class="post_header">{{item.message}}</div>
+                <div v-if="item.user === 'you'" class="post-header-you"><span>{{item.message}}</span></div>
+                <div v-else class="post-header-other"><span>{{item.message}}</span></div>
             </div>
         </div>
         <div class="send-form">
@@ -25,24 +26,25 @@ export default {
                     message: "",
                     messages: [],
                     connection: null,
+                    user: firebase.auth().currentUser.email
                 }
             },
 
         created(){
             this.getAllMessages()
-            this.webSocket()
+
         },
 
         methods: {
 
-            async webSocket(){
+            // async webSocket(){
                 
-                this.connection = new WebSocket("wss://echo.websocket.org")
+            //     this.connection = new WebSocket("wss://echo.websocket.org")
 
-                this.connection.onmessage = () => {
-                    this.getAllMessages()
-                }
-            },
+            //     this.connection.onmessage = () => {
+            //         this.getAllMessages()
+            //     }
+            // },
 
             async putData() {
                 const db = firebase.firestore();
@@ -52,7 +54,6 @@ export default {
                     user: firebase.auth().currentUser.email,
                     date: new Date()
                 }
-                await this.connection.send(this.message);
                 await date.add(body)
                 this.message = ""
             },
@@ -60,10 +61,15 @@ export default {
             async getAllMessages(){
 
                 const db = firebase.firestore();
-                const dat = await db.collection("messages").orderBy("date", "asc").get()
+                const dat = await db.collection("messages").orderBy("date", "asc")
                 
-                this.messages = (dat.docs.map(doc => ({ ...doc.data(), id: doc.id })));
-            
+                dat.onSnapshot((data) => {
+                    this.messages = (data.docs.map(doc => ({ ...doc.data(), id: doc.id, user: doc.data().user === this.user ? "you" : "other"})));
+                })
+
+                
+
+                console.log(this.messages)
             }
 
     }
@@ -77,10 +83,11 @@ export default {
     background-color: indianred;
     border-radius: 5px;
 }
+
 .chat-wrapper{
-    width: 200px;
-    height: 300px;
-    background-color: gray;
+    width: 400px;
+    height: 600px;
+    background-color: rgb(235, 230, 230);
     border: 1px rounded black;
     border-radius: 5px;
     position: fixed;
@@ -109,7 +116,45 @@ export default {
 }
 
 .messages-wrapper{
-    height: 70%;
-    overflow: scroll;
+    height: 90%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-left: 5px;
+}
+
+.messages-wrapper::-webkit-scrollbar{
+    width:10px
+}
+
+.messages-wrapper::-webkit-scrollbar-thumb{
+    border-radius: 5px;
+    background: rgba(41, 40, 40, 0.1);
+}
+
+.post-header-you{
+
+    margin: 5px;
+    padding: 5px;
+    text-align: right;
+    width: 100%;
+}
+
+.post-header-you > span {
+    background-color: rgb(27, 184, 27);
+    padding: 7px;
+    border-radius: 10px;
+}
+
+.post-header-other{
+
+    margin: 5px;
+    padding: 5px;
+    text-align: left;
+}
+
+.post-header-other > span {
+    background-color: rgb(110, 110, 224);
+    padding: 7px;
+    border-radius: 10px;
 }
 </style>
