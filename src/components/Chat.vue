@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="chat-main"> 
     <div class="chat-wrapper" id="wrapper">
             <div class="chat-header-wrapper">
                 <div class="chat-header">Witamy na czacie internetowym</div>
@@ -120,13 +120,18 @@ export default {
 
 <style scoped>
 
+.chat-main{
+    font-family: 'Open Sans', sans-serif;
+}
 
 
 .chat-header-wrapper{
+
+
     display: flex;
     flex-wrap: wrap;
     padding: 5px;
-    background-color: indianred;
+    background-color: rgba(218, 105, 105, 0.603);
     border-radius: 5px;
 }
 
@@ -159,7 +164,7 @@ export default {
 .chat-wrapper{
     width: 400px;
     height: 600px;
-    background-color: rgb(235, 230, 230);
+    background-color: rgb(248, 248, 248);
     border: 1px rounded black;
     border-radius: 5px;
     position: fixed;
@@ -227,7 +232,7 @@ export default {
 
 .post-header-you > div {
 
-    background-color: rgb(27, 184, 27);
+    background-color: rgba(50, 201, 50, 0.637);
     padding: 7px;
     border-radius: 10px;
     text-align: right;
@@ -235,7 +240,7 @@ export default {
 
 .post-header-other > div {
 
-    background-color: rgb(110, 110, 224);
+    background-color: rgba(136, 136, 231, 0.596);
     padding: 7px;
     border-radius: 10px;
 }
