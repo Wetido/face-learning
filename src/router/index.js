@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from "../views/Login"
+import Registration from "../views/Registration"
 import Main from "../views/Main"
 import firebase from "../database/firebase"
+
 
 Vue.use(VueRouter)
 
@@ -17,6 +19,11 @@ Vue.use(VueRouter)
             path: '/login',
             name: 'Login',
             component: Login
+        },
+        {
+            path: '/singup',
+            name: 'Registration',
+            component: Registration
         },
     ]
 

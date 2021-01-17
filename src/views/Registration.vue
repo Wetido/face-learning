@@ -1,33 +1,26 @@
 <template>
-    <!-- <div>
-        <input type="email" placeholder="Email" v-model="email"/><br>
-        <input type="password" placeholder="Hasło" v-model="password"/><br>
-        <button @click="this.login">Login</button>
-        <router-link to="/singup">Nie masz konta? Rejestracja.</router-link>
-    </div> -->
+
     <div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
     <div class="card card0 border-0">
         <div class="row d-flex">
-            <div class="col-lg-6">
-                <div class="card1 pb-5">
-
-                    <div class="row px-3 justify-content-center mt-4 mb-5 border-line"> <img src="../assets/logo_on_start.png" class="image"> </div>
-                </div>
-            </div>
+            
             <div class="col-lg-6">
                 <div class="card2 card border-0 px-4 py-5">
-                    <h2>Logowanie</h2>
+                    <h2>Rejestracja</h2>
                     <div class="row px-3"> <label class="mb-1">
                             <h6 class="mb-0 text-sm">Email</h6>
                         </label> <input class="mb-4" type="text" name="email" v-model="email" placeholder="Enter a valid email address"> </div>
                     <div class="row px-3"> <label class="mb-1">
                             <h6 class="mb-0 text-sm">Hasło</h6>
                         </label> <input type="password" name="password" v-model="password" placeholder="Enter password"> </div>
-                    <!-- <div class="row px-3 mb-4">
-                        <div class="custom-control custom-checkbox custom-control-inline"> <input id="chk1" type="checkbox" name="chk" class="custom-control-input"> <label for="chk1" class="custom-control-label text-sm">Remember me</label> </div> <a href="#" class="ml-auto mb-0 text-sm">Forgot Password?</a>
-                    </div> -->
-                    <div class="row mb-3 px-3"> <button type="submit" class="btn btn-blue text-center" @click="this.login">Zaloguj</button> </div>
-                    <div class="row mb-4 px-3"> <small class="font-weight-bold">Don't have an account? <router-link to="/singup" class="text-danger ">Zarejestruj</router-link></small> </div>
+                    <div class="row mb-3 px-3"> <button type="submit" class="btn btn-blue text-center" @click="this.register">Zarejestruj</button> </div>
+                    <div class="row mb-4 px-3"> <small class="font-weight-bold">Do you have an account? <router-link to="/login" class="text-danger ">Zaloguj</router-link></small> </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card1 pb-5">
+
+                    <div class="row px-3 justify-content-center mt-4 mb-5 border-line"> <img src="../assets/logo_on_start.png" class="image"> </div>
                 </div>
             </div>
         </div>
@@ -51,11 +44,11 @@ export default {
         };
     },
     methods: {
-        async login() {
+        async register() {
             try{
-                await firebase.auth().signInWithEmailAndPassword(
+                await firebase.auth().createUserWithEmailAndPassword(
                     this.email, this.password)
-                this.$router.replace({ name: "Main" });
+                this.$router.replace({ name: "Login" });
             }catch(error){
                 console.log(error)
             }
