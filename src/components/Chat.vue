@@ -3,12 +3,13 @@
     <div class="chat-wrapper" id="wrapper">
             <div class="chat-header-wrapper">
                 <div class="chat-header">Witamy na czacie internetowym</div>
-                <div class="close-button" @click="closeChat()">X</div>
+                <div class="close-button" @click="closeChat">X</div>
+                <div id="new-message"></div>
             </div>
 
-            <div class="messages-wrapper">
+            <div id="message-wrapper" class="messages-wrapper">
                 <div class="chat-list" v-for="(item, index) in messages" v-bind:key="index">
-                    <div v-if="messages[index+1] && messages[index-1]">
+                    <div v-if="messages[index-1]">
                     
                         <div v-if="item.user !== messages[index-1].user">
                             <div class="spacing"></div>
@@ -40,8 +41,8 @@
                 </div>
             </div>
             <div class="send-form">
-                <b-input class="send-input" v-model="message"></b-input>
-                <b-button @click="putData" class="send-button">Wyslij</b-button>
+                <b-input class="send-input" v-model="message" @click="hideNewMessage()"></b-input>
+                <b-button @click="handleSendMessage()" class="send-button">Wyslij</b-button>
             </div>
 
     </div>
@@ -69,7 +70,8 @@ export default {
                     message: "",
                     messages: [],
                     connection: null,
-                    user: firebase.auth().currentUser.email
+                    user: firebase.auth().currentUser.email,
+                    sendMessage: true,
                 }
             },
 
@@ -89,7 +91,17 @@ export default {
             //     }
             // },
 
+            handleSendMessage(){
+
+                if(this.message !== ""){
+                    
+                    this.sendMessage = true;
+                    this.putData()
+                }
+            },
+
             async putData() {
+                
                 const db = firebase.firestore();
                 const date = await db.collection("messages")
                 const body = {
@@ -97,8 +109,8 @@ export default {
                     user: firebase.auth().currentUser.email,
                     date: new Date()
                 }
-                await date.add(body)
                 this.message = ""
+                await date.add(body)
             },
 
             async getAllMessages(){
@@ -108,11 +120,26 @@ export default {
                 
                 dat.onSnapshot((data) => {
                     this.messages = (data.docs.map(doc => ({ ...doc.data(), id: doc.id})));
+                    this.handleNewMessage()
                 })
 
-                
+            },
 
-                console.log(this.messages)
+            handleNewMessage(){
+                if(this.sendMessage === false){
+                    const newMessage = document.getElementById('new-message')
+                    newMessage.style.visibility = 'visible'
+                }
+                if(this.sendMessage === true){
+                    this.sendMessage = false
+                }
+            },
+
+            hideNewMessage(){
+
+                this.sendMessage = false
+                const newMessage = document.getElementById('new-message')
+                newMessage.style.visibility = 'hidden'
             },
 
             closeChat(){
@@ -134,8 +161,6 @@ export default {
                 chatWrapper.style.visibility  = "visible"
 
             }
-
-
     }
 }
 </script>
@@ -146,6 +171,22 @@ export default {
     font-family: 'Open Sans', sans-serif;
 }
 
+
+
+#new-message{
+
+    visibility: hidden;
+}
+
+#new-message::after{
+
+    position: absolute;
+    content: '●';
+    color: lawngreen;
+    font-size: 3rem;
+    right: 385px;
+    bottom: 570px;
+}
 
 .chat-header-wrapper{
 
